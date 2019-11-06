@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2015 The CHOReVOLUTION project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>eu.chorevolution.idm</groupId>
+    <artifactId>syncope</artifactId>
+    <version>2.1.0</version>
+  </parent>
+
+  <name>CHOReVOLUTION IdM: Enduser</name>
+  <artifactId>enduser</artifactId>
+  <packaging>war</packaging>
+
+  <properties>
+    <rootpom.basedir>${basedir}/..</rootpom.basedir>
+  </properties>
+
+  <dependencies>
+
+    <dependency> 
+      <groupId>javax.servlet</groupId> 
+      <artifactId>javax.servlet-api</artifactId> 
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet.jsp</groupId>
+      <artifactId>javax.servlet.jsp-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>eu.chorevolution.idm</groupId>
+      <artifactId>common</artifactId>
+      <version>${project.version}</version>
+    </dependency>  
+    
+    <dependency>
+      <groupId>org.apache.syncope.client</groupId>
+      <artifactId>syncope-client-enduser</artifactId>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.lmax</groupId>
+      <artifactId>disruptor</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.logging.log4j</groupId>
+      <artifactId>log4j-slf4j-impl</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-logging</groupId>
+      <artifactId>commons-logging</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>syncope-enduser</finalName>
+
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <inherited>true</inherited>
+        <executions>
+          <execution>
+            <id>disableExtensions</id>
+            <phase>package</phase>
+            <configuration>
+              <target>
+                <replace file="${project.build.directory}/${project.build.finalName}/app/js/app.js" token="/* &lt;Extensions&gt; */" value="/* &lt;Extensions&gt;" />
+                <replace file="${project.build.directory}/${project.build.finalName}/app/js/app.js" token="/* &lt;/Extensions&gt; */" value="&lt;/Extensions&gt;*/" />
+              </target>
+            </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <inherited>true</inherited>
+        <configuration>
+          <webResources>
+            <resource>
+              <directory>${rootpom.basedir}</directory>
+              <targetPath>META-INF</targetPath>
+              <includes>
+                <include>LICENSE</include>
+                <include>NOTICE</include>
+              </includes>
+            </resource>
+            <resource>
+              <directory>${basedir}/src/main/webapp/WEB-INF</directory>
+              <filtering>true</filtering>
+              <targetPath>WEB-INF</targetPath>
+              <includes>
+                <include>web.xml</include>
+              </includes>
+            </resource>
+            <resource>
+              <directory>${basedir}/src/main/webapp/app</directory>
+              <filtering>true</filtering>
+              <targetPath>app</targetPath>
+              <includes>
+                <include>index.html</include>
+              </includes>
+            </resource>
+          </webResources>
+        </configuration>
+      </plugin>
+    </plugins>
+
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>embedded</id>
+      
+      <properties>
+        <conf.directory>${project.build.directory}/test-classes</conf.directory>
+      </properties>
+      
+      <dependencies>
+        <dependency>
+          <groupId>com.h2database</groupId>
+          <artifactId>h2</artifactId>
+          <scope>test</scope>
+        </dependency>
+      </dependencies>
+      
+      <build>
+        <defaultGoal>clean verify cargo:run</defaultGoal>  
+        
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <inherited>true</inherited>
+            <executions>
+              <execution>
+                <id>addActivitiTestContent</id>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <target>
+                    <taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="maven.plugin.classpath" />
+
+                    <if>
+                      <not>
+                        <available file="../core/target/test-classes/backup/MasterContent.xml" />
+                      </not>
+                      <then>
+                        <mkdir dir="../core/target/test-classes/backup" />
+                        <copy file="../core/target/test-classes/domains/MasterContent.xml" todir="../core/target/test-classes/backup" />
+                      </then>
+                    </if>
+                    <if>
+                      <available file="../core/target/syncope/WEB-INF/lib/activiti-engine-${activiti.version}.jar" />
+                      <then>
+                        <xslt basedir="../core/target/test-classes/backup" includes="MasterContent.xml" destdir="../core/target/test-classes/domains" extension=".xml" force="true" style="../core/src/test/resources/addActivitiToContent.xsl" />
+                      </then>
+                    </if>
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+              <execution>
+                <id>setupEmbeddedConf</id>
+                <phase>package</phase>
+                <configuration>
+                  <target>
+                    <delete dir="../core/target/syncope/WEB-INF/classes/domains" />
+                    <copy todir="../core/target/syncope/WEB-INF/classes/domains">
+                      <fileset dir="../core/target/test-classes/domains" />
+                    </copy>
+                    <copy file="../core/target/test-classes/connid.properties" todir="../core/target/syncope/WEB-INF/classes" overwrite="true" />
+                    <copy file="../core/target/test-classes/db.jsp" todir="../core/target/syncope" overwrite="true" />
+
+                    <copy file="${project.build.directory}/test-classes/enduser.properties" todir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes" overwrite="true" />
+                    
+                    <copy file="${project.build.directory}/test-classes/customForm.json" todir="${project.build.directory}/${project.build.finalName}/WEB-INF/classes" overwrite="true" />
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>ant-contrib</groupId>
+                <artifactId>ant-contrib</artifactId>
+                <version>20020829</version>
+              </dependency>
+            </dependencies>
+          </plugin>
+      
+          <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <inherited>true</inherited>
+            <configuration>
+              <container>
+                <dependencies>
+                  <dependency>
+                    <groupId>com.h2database</groupId>
+                    <artifactId>h2</artifactId>
+                  </dependency>
+                </dependencies>
+              </container>
+              <configuration>
+                <type>standalone</type>
+                <properties>
+                  <cargo.servlet.port>${cargo.servlet.port}</cargo.servlet.port>
+                  <cargo.tomcat.ajp.port>${cargo.tomcat.ajp.port}</cargo.tomcat.ajp.port>
+                  <cargo.rmi.port>${cargo.rmi.port}</cargo.rmi.port>
+
+                  <cargo.jvmargs>-noverify -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -XX:MaxPermSize=256m</cargo.jvmargs>
+                </properties>
+              </configuration>
+              <deployables>
+                <deployable>
+                  <location>../choremocks/target/choremocks</location>
+                  <properties>
+                    <context>choremocks</context>
+                  </properties>
+                </deployable>
+                <deployable>
+                  <location>../core/target/syncope</location>
+                  <properties>
+                    <context>syncope</context>
+                  </properties>
+                </deployable>
+                <deployable>
+                  <location>../console/target/syncope-console</location>
+                  <properties>
+                    <context>syncope-console</context>
+                  </properties>
+                </deployable>
+                <deployable>
+                  <location>${project.build.directory}/${project.build.finalName}</location>
+                  <properties>
+                    <context>syncope-enduser</context>
+                  </properties>
+                </deployable>
+              </deployables>
+            </configuration>
+          </plugin>
+        </plugins>  
+      </build>
+    </profile>
+
+    <profile>
+      <id>jrebel</id>
+      
+      <build>
+        <defaultGoal>clean verify cargo:run</defaultGoal>  
+
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <inherited>true</inherited>
+            <executions>
+              <execution>
+                <id>enableJRebel</id>
+                <phase>package</phase>
+                <configuration>
+                  <target>                                               
+                    <copy file="${basedir}/../core/target/test-classes/rebel.xml" tofile="${basedir}/../core/target/syncope/WEB-INF/classes/rebel.xml" overwrite="true" />
+                    <copy file="${basedir}/../choremocks/target/test-classes/rebel.xml" tofile="${basedir}/../choremocks/target/choremocks/WEB-INF/classes/rebel.xml" overwrite="true" />
+                    <copy file="${basedir}/../console/target/test-classes/rebel.xml" tofile="${basedir}/../console/target/syncope-console/WEB-INF/classes/rebel.xml" overwrite="true" />
+                  </target>
+                </configuration>
+                <goals>
+                  <goal>run</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <inherited>true</inherited>
+            <configuration>
+              <configuration>
+                <properties>
+                  <cargo.jvmargs>-Xdebug -Xrunjdwp:transport=dt_socket,address=8000,server=y,suspend=n
+                    -noverify -javaagent:${env.REBEL_HOME}/legacy/jrebel.jar -Drebel.spring_plugin=true
+                    -XX:+CMSClassUnloadingEnabled -XX:+UseConcMarkSweepGC -Xmx1024m -Xms512m</cargo.jvmargs>
+                </properties>
+              </configuration>
+            </configuration>
+          </plugin>          
+        </plugins>
+
+        <resources>
+          <resource>
+            <directory>src/test/resources</directory>
+            <filtering>true</filtering>
+            <includes>
+              <include>rebel.xml</include>
+            </includes>
+          </resource>
+        </resources>
+      </build>
+    </profile>
+  </profiles>
+</project>

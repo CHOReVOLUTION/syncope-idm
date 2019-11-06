@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<!--
+Copyright 2015 The CHOReVOLUTION project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<choreography id="13de56fd-4ddb-4a5a-847c-75672d57f2af">
+  <service_group>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>JourneyPlanner</name>
+      <role>Journey Planner</role>
+      <url>http://localhost:8080/JourneyPlanner/JourneyPlanner</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>OSMParking</name>
+      <role>OSM Parking</role>
+      <url>http://localhost:8080/OSMParking/OSMParking</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>Poi</name>
+      <role>Poi</role>
+      <url>http://localhost:8080/Poi/Poi</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>PublicTransportation</name>
+      <role>Public Transportation</role>
+      <url>http://localhost:8080/PublicTransportation/PublicTransportation</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>News</name>
+      <role>News</role>
+      <url>http://localhost:8080/News/News</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>STApp</name>
+      <role>STApp</role>
+      <url>http://localhost:8080/STApp/STApp</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>TrafficInformation</name>
+      <role>Traffic Information</role>
+      <url>http://localhost:8080/TrafficInformation/TrafficInformation</url>
+    </service>
+    <service xsi:type="existingService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>Weather</name>
+      <role>Weather</role>
+      <url>http://localhost:8080/Weather/Weather</url>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>consumercdtripplanner</name>
+      <role>Consumer Trip Planner</role>
+      <instances>1</instances>
+      <packageType>WAR</packageType>
+      <packageUrl>http://localhost:8080/cdtripplanner/cdtripplanner</packageUrl>
+      <serviceType>COORDINATION_DELEGATE</serviceType>
+      <url>http://192.168.150.142/ode/processes/cdtripplanner</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/ode/processes/cdtripplanner</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>consumercdtouristagent</name>
+      <role>Consumer Tourist Agent</role>
+      <instances>1</instances>
+      <packageType>WAR</packageType>
+      <packageUrl>http://localhost:8080/cdtouristagent/cdtouristagent</packageUrl>
+      <serviceType>COORDINATION_DELEGATE</serviceType>
+      <url>http://192.168.150.142/ode/processes/cdtouristagent</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/ode/processes/cdtouristagent</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>sftrafficinformation</name>
+      <role>SF Traffic Information</role>
+      <dependency>
+        <serviceSpecName>TrafficInformation</serviceSpecName>
+        <serviceSpecRole>Traffic Information</serviceSpecRole>
+      </dependency>
+      <instances>1</instances>
+      <packageType>WAR</packageType>
+      <packageUrl>http://localhost:8080/TrafficInformation/SF_TrafficInformation.war</packageUrl>
+      <serviceType>SECURITY_FILTER</serviceType>
+      <url>http://localhost:9080/choremocks/rest/</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/sftrafficinformation</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>cdtripplanner</name>
+      <role>Trip Planner</role>
+      <dependency>
+        <serviceSpecName>consumercdtripplanner</serviceSpecName>
+        <serviceSpecRole>Consumer Trip Planner</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>sftrafficinformation</serviceSpecName>
+        <serviceSpecRole>Traffic Information</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>JourneyPlanner</serviceSpecName>
+        <serviceSpecRole>Journey Planner</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>OSMParking</serviceSpecName>
+        <serviceSpecRole>OSM Parking</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>PublicTransportation</serviceSpecName>
+        <serviceSpecRole>Public Transportation</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>Weather</serviceSpecName>
+        <serviceSpecRole>Weather</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>cdtouristagent</serviceSpecName>
+        <serviceSpecRole>Tourist Agent</serviceSpecRole>
+      </dependency>
+      <instances>1</instances>
+      <packageType>ODE</packageType>
+      <packageUrl>http://localhost:8080/cdtripplanner/cdtripplanner.war</packageUrl>
+      <serviceType>COORDINATION_DELEGATE</serviceType>
+      <url>http://192.168.150.142/ode/processes/cdtripplanner</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/ode/processes/cdtripplanner</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>sfpoi</name>
+      <role>SF Poi</role>
+      <dependency>
+        <serviceSpecName>Poi</serviceSpecName>
+        <serviceSpecRole>Poi</serviceSpecRole>
+      </dependency>
+      <instances>1</instances>
+      <packageType>WAR</packageType>
+      <packageUrl>http://localhost:8080/TrafficInformation/SF_Poi.war</packageUrl>
+      <serviceType>SECURITY_FILTER</serviceType>
+      <url>http://localhost:9080/choremocks/rest</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/sfpoi</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>cdtouristagent</name>
+      <role>Tourist Agent</role>
+      <dependency>
+        <serviceSpecName>consumercdtouristagent</serviceSpecName>
+        <serviceSpecRole>Consumer Tourist Agent</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>sfpoi</serviceSpecName>
+        <serviceSpecRole>Poi</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>News</serviceSpecName>
+        <serviceSpecRole>News</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>cdtripplanner</serviceSpecName>
+        <serviceSpecRole>Trip Planner</serviceSpecRole>
+      </dependency>
+      <dependency>
+        <serviceSpecName>cdclientSTApp</serviceSpecName>
+        <serviceSpecRole>CD Client STApp</serviceSpecRole>
+      </dependency>
+      <instances>1</instances>
+      <packageType>ODE</packageType>
+      <packageUrl>http://localhost:8080/cdtouristagent/cdtouristagent.war</packageUrl>
+      <serviceType>COORDINATION_DELEGATE</serviceType>
+      <url>http://192.168.150.142/ode/processes/cdtouristagent</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/ode/processes/cdtouristagent</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+    <service xsi:type="deployedService" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+      <name>cdclientSTApp</name>
+      <role>CD Client STApp</role>
+      <dependency>
+        <serviceSpecName>cdtouristagent</serviceSpecName>
+        <serviceSpecRole>Tourist Agent</serviceSpecRole>
+      </dependency>
+      <instances>1</instances>
+      <packageType>ODE</packageType>
+      <packageUrl>http://localhost:8080/STApp/STApp.war</packageUrl>
+      <serviceType>COORDINATION_DELEGATE</serviceType>
+      <url>http://192.168.150.142/ode/processes/STApp</url>
+      <deploymentInfo>
+        <endpoint>http://192.168.150.130:8080/ode/processes/STApp</endpoint>
+        <node>
+          <cpus>2</cpus>
+          <hostname>chornode1</hostname>
+          <image>af036b89-0ef4-48e9-99ac-51b0cf9c314e</image>
+          <ip>192.168.150.130</ip>
+          <os>Ubuntu</os>
+          <privateKeyFile>/etc/enactment-engine/eekey.pem</privateKeyFile>
+          <ram>1024</ram>
+          <state>1</state>
+          <storage>10000</storage>
+          <user>ubuntu</user>
+          <zone>RegionOne</zone>
+        </node>
+      </deploymentInfo>
+    </service>
+  </service_group>
+</choreography>
+

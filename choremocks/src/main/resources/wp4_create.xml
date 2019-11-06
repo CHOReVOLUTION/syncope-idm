@@ -1,0 +1,272 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!--
+Copyright 2015 The CHOReVOLUTION project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<choreography id="uZCfKNnK">
+	<location />
+	<service_group>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>bcND</name>
+			<dependency>
+				<serviceSpecName>cdND</serviceSpecName>
+				<serviceSpecRole>ND</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/bcs/bcND.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>BINDING_COMPONENT</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/bcND?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/bcND</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>cdND</name>
+			<dependency>
+				<serviceSpecName>cdSEADA-SEARP</serviceSpecName>
+				<serviceSpecRole>SEADA-SEARP</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdSEADA-SEATSA</serviceSpecName>
+				<serviceSpecRole>SEADA-SEATSA</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>ODE</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/cds/cdND.tar.gz</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/ode/processes/cdND?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/ode/processes/cdND</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>cdSEADA-TRAFFIC</name>
+			<dependency>
+				<serviceSpecName>SEADA-TRAFFIC</serviceSpecName>
+				<serviceSpecRole>SEADA-TRAFFIC</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>bcDTS-CONGESTION</serviceSpecName>
+				<serviceSpecRole>DTS-CONGESTION</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>bcDTS-BRIDGE</serviceSpecName>
+				<serviceSpecRole>DTS-BRIDGE</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>bcDTS-ACCIDENTS</serviceSpecName>
+				<serviceSpecRole>DTS-ACCIDENTS</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>bcDTS-WEATHER</serviceSpecName>
+				<serviceSpecRole>DTS-WEATHER</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdSEADA-SEATSA</serviceSpecName>
+				<serviceSpecRole>SEADA-SEATSA</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>ODE</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/cds/cdSEADA-TRAFFIC.tar.gz</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/ode/processes/cdSEADA-TRAFFIC?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/ode/processes/cdSEADA-TRAFFIC</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>cdSEADA-SEATSA</name>
+			<dependency>
+				<serviceSpecName>SEADA-SEATSA</serviceSpecName>
+				<serviceSpecRole>SEADA-SEATSA</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdND</serviceSpecName>
+				<serviceSpecRole>ND</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdSEADA-SEARP</serviceSpecName>
+				<serviceSpecRole>SEADA-SEARP</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdSEADA-TRAFFIC</serviceSpecName>
+				<serviceSpecRole>SEADA-TRAFFIC</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>ODE</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/cds/cdSEADA-SEATSA.tar.gz</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/ode/processes/cdSEADA-SEATSA?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/ode/processes/cdSEADA-SEATSA</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>cdSEADA-SEARP</name>
+			<dependency>
+				<serviceSpecName>SEADA-SEARP</serviceSpecName>
+				<serviceSpecRole>SEADA-SEARP</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>DTS-GOOGLE</serviceSpecName>
+				<serviceSpecRole>DTS-GOOGLE</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>DTS-HERE</serviceSpecName>
+				<serviceSpecRole>DTS-HERE</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdND</serviceSpecName>
+				<serviceSpecRole>ND</serviceSpecRole>
+			</dependency>
+			<dependency>
+				<serviceSpecName>cdSEADA-SEATSA</serviceSpecName>
+				<serviceSpecRole>SEADA-SEATSA</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>ODE</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/cds/cdSEADA-SEARP.tar.gz</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/ode/processes/cdSEADA-SEARP?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/ode/processes/cdSEADA-SEARP</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>SEADA-TRAFFIC</name>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/prosumers/SEADA-TRAFFIC.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/SEADA-TRAFFIC?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/SEADA-TRAFFIC</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>SEADA-SEATSA</name>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/prosumers/SEADA-SEATSA.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/SEADA-SEATSA?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/SEADA-SEATSA</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>SEADA-SEARP</name>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/prosumers/SEADA-SEARP.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>COORDINATION_DELEGATE</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/SEADA-SEARP?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/SEADA-SEARP</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>bcDTS-ACCIDENTS</name>
+			<dependency>
+				<serviceSpecName>DTS-ACCIDENTS</serviceSpecName>
+				<serviceSpecRole>DTS-ACCIDENTS</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/bcs/bcDTS-ACCIDENTS.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>BINDING_COMPONENT</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/bcDTS-ACCIDENTS?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/bcDTS-ACCIDENTS</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>bcDTS-BRIDGE</name>
+			<dependency>
+				<serviceSpecName>DTS-BRIDGE</serviceSpecName>
+				<serviceSpecRole>DTS-BRIDGE</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/bcs/bcDTS-BRIDGE.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>BINDING_COMPONENT</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/bcDTS-BRIDGE?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/bcDTS-BRIDGE</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>bcDTS-CONGESTION</name>
+			<dependency>
+				<serviceSpecName>DTS-CONGESTION</serviceSpecName>
+				<serviceSpecRole>DTS-CONGESTION</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/bcs/bcDTS-CONGESTION.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>BINDING_COMPONENT</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/bcDTS-CONGESTION?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/bcDTS-CONGESTION</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="deployedService">
+			<name>bcDTS-WEATHER</name>
+			<dependency>
+				<serviceSpecName>DTS-WEATHER</serviceSpecName>
+				<serviceSpecRole>DTS-WEATHER</serviceSpecRole>
+			</dependency>
+			<instances>1</instances>
+			<packageType>WAR</packageType>
+			<packageUrl>http://192.168.150.124:8000/demos/wp4/bcs/bcDTS-WEATHER.war</packageUrl>
+			<requiredHttps>false</requiredHttps>
+			<serviceType>BINDING_COMPONENT</serviceType>
+			<descriptorUrl>http://192.168.150.149:8000/bcDTS-WEATHER?wsdl</descriptorUrl>
+			<url>http://192.168.150.149:8000/bcDTS-WEATHER</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="existingService">
+			<name>DTS-BRIDGE</name>
+			<url>http://jinx.viktoria.chalmers.se:3001/bridgeNextClosure</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="existingService">
+			<name>DTS-ACCIDENTS</name>
+			<url>http://jinx.viktoria.chalmers.se:3003/getAccidents</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="existingService">
+			<name>DTS-WEATHER</name>
+			<url>http://jinx.viktoria.chalmers.se:3002/getWeather</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="existingService">
+			<name>DTS-CONGESTION</name>
+			<url>http://jinx.viktoria.chalmers.se:3004/getCongestion</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="existingService">
+			<name>DTS-HERE</name>
+			<url>http://192.168.150.146:8080/DTS-HERE/DTS-HERE/</url>
+		</service>
+		<service xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			xsi:type="existingService">
+			<name>DTS-GOOGLE</name>
+			<url>http://192.168.150.146:8080/DTS-GOOGLE/DTS-GOOGLE/</url>
+		</service>
+	</service_group>
+	<status>RUNNING</status>
+</choreography>

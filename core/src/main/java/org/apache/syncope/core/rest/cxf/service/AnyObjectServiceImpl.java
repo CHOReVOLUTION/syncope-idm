@@ -1,0 +1,59 @@
+/*
+ * Copyright 2016 The CHOReVOLUTION project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.apache.syncope.core.rest.cxf.service;
+
+import javax.ws.rs.BadRequestException;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.syncope.common.lib.patch.AnyObjectPatch;
+import org.apache.syncope.common.lib.search.SpecialAttr;
+import org.apache.syncope.common.lib.to.AnyObjectTO;
+import org.apache.syncope.common.lib.to.PagedResult;
+import org.apache.syncope.common.rest.api.beans.AnyQuery;
+import org.apache.syncope.common.rest.api.service.AnyObjectService;
+import org.apache.syncope.core.logic.AbstractAnyLogic;
+import org.apache.syncope.core.logic.ChoreographyAnyObjectLogic;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class AnyObjectServiceImpl extends AbstractAnyService<AnyObjectTO, AnyObjectPatch> implements AnyObjectService {
+
+    @Autowired(required = false)
+    private ChoreographyAnyObjectLogic logic;
+
+    @Override
+    protected AbstractAnyLogic<AnyObjectTO, AnyObjectPatch> getAnyLogic() {
+        return logic;
+    }
+
+    @Override
+    protected AnyObjectPatch newPatch(final String key) {
+        AnyObjectPatch patch = new AnyObjectPatch();
+        patch.setKey(key);
+        return patch;
+    }
+
+    @Override
+    public PagedResult<AnyObjectTO> search(final AnyQuery anyQuery) {
+        if (StringUtils.isBlank(anyQuery.getFiql())
+                || -1 == anyQuery.getFiql().indexOf(SpecialAttr.TYPE.toString())) {
+
+            throw new BadRequestException(SpecialAttr.TYPE.toString() + " is required in the FIQL string");
+        }
+
+        return super.search(anyQuery);
+    }
+}

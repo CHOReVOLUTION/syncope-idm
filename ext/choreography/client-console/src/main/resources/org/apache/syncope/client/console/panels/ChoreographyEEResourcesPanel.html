@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!--
+Copyright 2016 The CHOReVOLUTION project.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+    <wicket:panel>
+        <h3><wicket:message key="enactmentEngine"/>&nbsp;<span wicket:id="eeName"/></h3>
+        <div wicket:id="eeDetails">
+            <div class="row">
+                <span wicket:id="resourceWidget"/>
+            </div>
+            <h3><wicket:message key="actions"/></h3>
+            <div wicket:id="actionsPanel"/>
+            <h3><wicket:message key="virtualMachines"/></h3>
+            <div wicket:id="virtualMachinesList"/>
+        </div>
+        <div wicket:id="message">
+            <label><wicket:message key="not_available"/></label>
+        </div>
+        <div wicket:id="resizeEEModal"/>
+    </wicket:panel>
+</html>

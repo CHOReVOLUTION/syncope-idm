@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright 2017 The CHOReVOLUTION project
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>eu.chorevolution.idm</groupId>
+    <artifactId>syncope</artifactId>
+    <version>2.1.0</version>
+  </parent>
+
+  <name>CHOReVOLUTION IdM: Standalone Distribution</name>
+  <artifactId>idm-standalone</artifactId>
+  <packaging>jar</packaging>
+
+  <properties>
+    <rootpom.basedir>${basedir}/..</rootpom.basedir>
+
+    <conf.directory>${CATALINA_HOME}/webapps/syncope/WEB-INF/classes</conf.directory>
+    <connid.location>file:bundles</connid.location>
+    <log.directory>${sys:catalina.home}/logs</log.directory>
+
+    <work.dir>${project.build.directory}/standalone</work.dir>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>eu.chorevolution.idm</groupId>
+      <artifactId>core</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>eu.chorevolution.idm</groupId>
+      <artifactId>console</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>eu.chorevolution.idm</groupId>
+      <artifactId>enduser</artifactId>
+      <version>${project.version}</version>
+      <type>war</type>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
+  <build>    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>prepare-standalone</id>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <phase>verify</phase>
+            <configuration>
+              <target>
+                <mkdir dir="${work.dir}" />
+
+                <!-- legal stuff -->
+                <copy file="${project.build.outputDirectory}/README" todir="${work.dir}" />
+                <copy file="LICENSE" todir="${work.dir}" />
+                <copy file="NOTICE" todir="${work.dir}" />
+
+                <!-- Unzip Tomcat and remove docs and examples from webapps (space saving) -->
+                <unzip src="${settings.localRepository}/org/codehaus/cargo/cargo-container-archives/tomcat-${tomcat.version}.zip" dest="${work.dir}" />
+                <delete dir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/docs" />
+                <delete dir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/examples" />
+
+                <!-- local bundles directory -->
+                <mkdir dir="${work.dir}/apache-tomcat-${tomcat.version}/bundles" />
+
+                <!-- Syncope core -->
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope">
+                  <fileset dir="../core/target/syncope" includes="**/*" />
+                </copy>
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope/WEB-INF/classes" overwrite="true">
+                  <fileset dir="${project.build.outputDirectory}/core" />
+                </copy>
+
+                <!-- Syncope console -->
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope-console">
+                  <fileset dir="../console/target/syncope-console" includes="**/*" />
+                </copy>
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope-console/WEB-INF/classes" overwrite="true">
+                  <fileset dir="${project.build.outputDirectory}/console" />
+                </copy>
+
+                <!-- Syncope enduser -->
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope-enduser">
+                  <fileset dir="../enduser/target/syncope-enduser" includes="**/*" />
+                </copy>
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope-enduser/WEB-INF/classes" overwrite="true">
+                  <fileset dir="${project.build.outputDirectory}/enduser" />
+                </copy>
+
+                <!-- Tomcat shared libraries: H2, groovy, StAX2 API, Woodstox -->
+                <copy file="${settings.localRepository}/com/h2database/h2/${h2.version}/h2-${h2.version}.jar" todir="${work.dir}/apache-tomcat-${tomcat.version}/lib" />
+                <copy file="${settings.localRepository}/org/codehaus/groovy/groovy-all/${groovy.version}/groovy-all-${groovy.version}.jar" todir="${work.dir}/apache-tomcat-${tomcat.version}/lib" />
+                <copy todir="${work.dir}/apache-tomcat-${tomcat.version}/lib">
+                  <fileset dir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope/WEB-INF/lib" includes="stax2-api-*.jar" />
+                  <fileset dir="${work.dir}/apache-tomcat-${tomcat.version}/webapps/syncope/WEB-INF/lib" includes="woodstox-core-asl-*.jar" />
+                </copy>
+
+                <!-- Other custom Tomcat resources -->
+                <copy file="src/main/resources/context.xml" todir="${work.dir}/apache-tomcat-${tomcat.version}/conf" overwrite="true" />
+                <copy file="src/main/resources/setenv.sh" todir="${work.dir}/apache-tomcat-${tomcat.version}/bin" />
+                <copy file="src/main/resources/setenv.bat" todir="${work.dir}/apache-tomcat-${tomcat.version}/bin" />
+                <replace file="${work.dir}/apache-tomcat-${tomcat.version}/conf/server.xml" token="8080" value="${cargo.servlet.port}" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <inherited>false</inherited>
+        <configuration>
+          <outputDirectory>${work.dir}/apache-tomcat-${tomcat.version}/bundles</outputDirectory>
+          <useBaseVersion>true</useBaseVersion>
+          <artifactItems>
+            <artifactItem>
+              <groupId>eu.chorevolution.idm</groupId>
+              <artifactId>connid-federation-server</artifactId>
+              <version>${connid.federationserver.version}</version>
+              <classifier>bundle</classifier>
+            </artifactItem>
+          </artifactItems>
+        </configuration>
+        <executions>
+          <execution>
+            <id>set-bundles</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>copy</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptors>
+            <descriptor>src/assemble/standalone-zip.xml</descriptor>
+          </descriptors>
+        </configuration>
+        <executions>
+          <execution>
+            <id>make-standalone-zip</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-checkstyle-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>                
+    </plugins>
+    
+    <resources>
+      <resource>
+        <directory>../core/src/main/resources</directory>
+        <excludes>
+          <exclude>provisioning.properties</exclude>
+        </excludes>
+        <targetPath>core</targetPath>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>../core/src/main/resources/domains</directory>
+        <includes>
+          <include>MasterContent.xml</include>
+        </includes>
+        <targetPath>core/domains</targetPath>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>../core/src/test/resources</directory>
+        <includes>
+          <include>provisioning.properties</include>
+        </includes>
+        <targetPath>core</targetPath>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>../core/src/test/resources/domains</directory>
+        <includes>
+          <include>Master.properties</include>
+        </includes>
+        <targetPath>core/domains</targetPath>
+        <filtering>true</filtering>
+      </resource>
+
+      <resource>
+        <directory>../console/src/main/resources</directory>
+        <targetPath>console</targetPath>
+        <includes>
+          <include>log4j2.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>../console/src/test/resources</directory>
+        <targetPath>console</targetPath>
+        <includes>
+          <include>console.properties</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+      
+      <resource>
+        <directory>../enduser/src/main/resources</directory>
+        <targetPath>enduser</targetPath>
+        <includes>
+          <include>log4j2.xml</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+      <resource>
+        <directory>../enduser/src/test/resources</directory>
+        <targetPath>enduser</targetPath>
+        <includes>
+          <include>enduser.properties</include>
+        </includes>
+        <filtering>true</filtering>
+      </resource>
+
+      <resource>
+        <directory>src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>src/assemble</directory>
+      </resource>
+    </resources>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      
+      <build>
+        <plugins>      
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
+</project>

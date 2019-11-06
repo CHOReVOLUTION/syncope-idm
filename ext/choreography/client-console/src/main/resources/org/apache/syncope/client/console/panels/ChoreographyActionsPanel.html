@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<!--
+Copyright 2016 The CHOReVOLUTION project.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:wicket="http://wicket.apache.org">
+    <wicket:panel>
+        <span wicket:id="detailsPanel"></span>
+        <span wicket:id="startPanel"></span>
+        <span wicket:id="enactPanel"></span>
+        <span wicket:id="pausePanel"></span>
+        <span wicket:id="stopPanel"></span>
+        <span wicket:id="freezePanel"></span>
+        <span wicket:id="unfreezePanel"></span>
+        <span wicket:id="resizePanel"></span>
+        <span wicket:id="editPanel"></span>
+        <span wicket:id="deletePanel"></span>
+
+
+        <wicket:fragment wicket:id="detailsFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-search" alt="show details" title="Show Details"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="startFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-play" alt="start" title="Start"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="enactFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-cogs" alt="enact" title="Enact"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="pauseFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-pause" alt="pause" title="Pause"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="stopFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-stop" alt="stop" title="Stop"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="freezeFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-pause" alt="freeze icon" title="Freeze"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="unfreezeFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-play" alt="unfreeze icon" title="Unfreeze"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="resizeFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-expand" alt="resize icon" title="Resize"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="editFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="glyphicon glyphicon-pencil" alt="edit icon" title="Edit"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="deleteFragment">
+            <a href="#" wicket:id="link" class="btn"><i class="fa fa-minus" alt="delete icon" title="Delete"></i></a>
+        </wicket:fragment>
+
+        <wicket:fragment wicket:id="emptyFragment">
+        </wicket:fragment>
+    </wicket:panel>
+</html>
