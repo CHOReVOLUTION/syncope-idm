@@ -24,8 +24,8 @@ Moreover, the IdM contains the Service Inventory that acts as a central reposito
    
 ### Building
 
-To build the project and generate the bundle use the following Maven command inside the folder [syncope-idm
-/standalone](https://github.com/seagroup-univaq/syncope-idm/tree/master/standalone)
+To build the project and generate the bundle use the following Maven command inside the folder `syncope-idm
+/standalone`
 
     mvn clean verify
 
