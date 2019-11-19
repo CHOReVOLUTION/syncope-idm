@@ -13,4 +13,17 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-# syncope-idm
+# Syncope Identity Manager
+This repository contains the Identity Manager (IdM). It is based on Apache Syncope project and it is responsible for managing users and services. In particular, the IdM is able to query the services for supported application contexts and played roles; force a specific application context for a certain service (put in "maintenance" or disable/enable).
+Moreover, the IdM contains the Service Inventory that acts as a central repository for the description models of the services and things that can be used during the synthesis process.
+    
+## Requirements
+
+* [Apache Maven 3.3.3+](https://maven.apache.org/install.html)
+* [Java 8+](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)
+   
+### Building
+
+To build the project and generate the bundle use the following Maven command inside the folder [standalone](https://github.com/seagroup-univaq/syncope-idm/tree/master/standalone)
+
+    mvn clean verify
