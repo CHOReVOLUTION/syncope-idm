@@ -29,4 +29,4 @@ To build the project and generate the bundle use the following Maven command ins
 
     mvn clean verify
 
-If everything checks out, a zip named `idm-standalone-2.1.1-SNAPSHOT-distribution.zip` file containing the Syncope Identity Manager embedded in a tomcat web server should be available in the `/standalone/target` folder.
+If everything checks out, a zip named `idm-standalone-2.2.0-distribution.zip` file containing the Syncope Identity Manager embedded in a tomcat web server should be available in the `/standalone/target` folder.
