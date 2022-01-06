@@ -95,7 +95,7 @@ limitations under the License.
   </developers>
   
   <properties>
-    <syncope.version>2.0.3</syncope.version>
+    <syncope.version>2.0.15</syncope.version>
     <connid.federationserver.version>1.0.0</connid.federationserver.version>
 
     <secretKey>dsadsadasa4444</secretKey>
